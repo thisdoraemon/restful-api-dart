@@ -1,53 +1,31 @@
 import 'dart:io';
-
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
-
 import 'article.dart';
 
-// Configure routes.
-final _router = Router()
-  ..get('/', _rootHandler)
-  ..get("/articles", _getArticlesHandler)
-  ..post("/articles", _postArticlesHandler);
+Future<void> main(List<String> args) async {
+  final articles = <Article>[];
+  final router = Router()
+    ..get('/', (Request req) => Response.ok('Hello, World!\n'))
+    ..get('/articles', (Request req) => Response.ok(articlesToJson(articles)))
+    ..post('/articles', (Request request) async {
+      try {
+        final body = await request.readAsString();
+        final article = articleFromJson(body);
+        articles.add(article);
+        return Response.ok(articleToJson(article));
+      } catch (e) {
+        return Response(400);
+      }
+    });
 
-List<Article> articles = [];
-
-Future<Response> _postArticlesHandler(Request request) async {
-  String body = await request.readAsString();
-
-  try {
-    Article article = articleFromJson(body);
-    articles.add(article);
-    return Response.ok(articleToJson(article));
-  } catch (e) {
-    return Response(400);
-  }
-}
-
-Response _rootHandler(Request req) {
-  return Response.ok('Hello, World!\n');
-}
-
-Response _echoHandler(Request request) {
-  final message = request.params['message'];
-  return Response.ok('$message\n');
-}
-
-Response _getArticlesHandler(Request request) {
-  return Response.ok(articlesToJson(articles));
-}
-
-void main(List<String> args) async {
-  // Use any available host or container IP (usually `0.0.0.0`).
   final ip = InternetAddress.anyIPv4;
-
-  // Configure a pipeline that logs requests.
-  final handler = Pipeline().addMiddleware(logRequests()).addHandler(_router);
-
-  // For running in containers, we respect the PORT environment variable.
   final port = int.parse(Platform.environment['PORT'] ?? '8080');
+  final handler = Pipeline()
+      .addMiddleware(logRequests())
+      .addHandler(router);
+
   final server = await serve(handler, ip, port);
   print('Server listening on port ${server.port}');
 }
