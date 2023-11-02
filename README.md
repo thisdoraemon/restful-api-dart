@@ -15,12 +15,12 @@ Make sure you have Dart installed on your system. You can download Dart from [da
 1. Clone this repository to your local machine:
 
    ```shell
-   git clone https://github.com/yourusername/dart-restful-api.git
+   git clone https://github.com/umjiiii/restful-api-dart.git
    ```
 
 2. Change to the project directory:
    ```shell
-   cd dart-restful-api
+   cd dart-rest-api
    ```
    
 3. Run the server:
