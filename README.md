@@ -1,4 +1,4 @@
-# Dart RESTful API Example
+# Basic Dart RESTful API Example
 
 This is a simple example of a RESTful API server implemented in Dart using the Shelf package. It provides endpoints for creating, retrieving, and listing articles.
 
