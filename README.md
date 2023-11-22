@@ -15,7 +15,7 @@ Make sure you have Dart installed on your system. You can download Dart from [da
 1. Clone this repository to your local machine:
 
    ```shell
-   git clone https://github.com/umjiiii/restful-api-dart.git
+   git clone https://github.com/thisdoraemon/restful-api-dart.git
    ```
 
 2. Change to the project directory:
